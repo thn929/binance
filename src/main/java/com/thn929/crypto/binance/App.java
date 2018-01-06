@@ -20,8 +20,8 @@ import java.security.NoSuchAlgorithmException;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        final String apiKey = Files.lines(Paths.get(System.getProperty("user.home") + "/binance/apiKey")).findFirst().get();
-        final String secretKey = Files.lines(Paths.get(System.getProperty("user.home") + "/binance/secretKey")).findFirst().get();
+        final String apiKey = args[0];
+        final String secretKey = args[1];
 
         final long currentTimeMillis = System.currentTimeMillis();
         final String baseUrl = "https://api.binance.com/api/v3";
@@ -29,7 +29,7 @@ public class App {
         final String requestParams = "timestamp=" + currentTimeMillis;
         final String signatureParam = "signature=" + hmacSha256Signature(secretKey, requestParams);
 
-        System.out.println(signatureParam);
+//        System.out.println(signatureParam);
 
         final OkHttpClient client = new OkHttpClient();
 
@@ -39,7 +39,7 @@ public class App {
                 .get()
                 .build();
 
-        System.out.println(request.url());
+//        System.out.println(request.url());
 
         final Response response = client.newCall(request).execute();
         prettyPrintJson(response.body().string());
